@@ -1,6 +1,6 @@
 <?php
   
-  require 'phpmailer/PHPMailerAutoload.php';
+  require 'PHPMailerAutoload.php';
   
   // Create object of PHPMailer class
   $mail = new PHPMailer(true);
