@@ -1,26 +1,43 @@
 <?php
-if(isset($_POST['submit'])){
-    $mail = new PHPMailer();
+  
+  require 'phpmailer/PHPMailerAutoload.php';
+  
+  // Create object of PHPMailer class
+  $mail = new PHPMailer(true);
 
-// Settings
-$mail->IsSMTP();
-$mail->CharSet = 'UTF-8';
+  $output = '';
 
-$mail->Host       = "officialpurposeforproject@gmail.com"; // SMTP server example
-$mail->SMTPDebug  = 0;                     // enables SMTP debug information (for testing)
-$mail->SMTPAuth   = true;                  // enable SMTP authentication
-$mail->Port       = 25;                    // set the SMTP port for the GMAIL server
-$mail->Username   = "officialpurposeforproject@gmail.com"; // SMTP account username example
-$mail->Password   = "8800583044";        // SMTP account password example
+  if (isset($_POST['submit'])) {
+    $name = $_POST['name'];
+    $email = $_POST['Email'];
+    $message = $_POST['Message'];
 
-// Content
-$mail->isHTML(true);                                  // Set email format to HTML
-$mail->Subject = 'Here is the subject';
-$mail->Body    = 'This is the HTML message body <b>in bold!</b>';
-$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+    try {
+      $mail->isSMTP();
+      $mail->Host = 'smtp.gmail.com';
+      $mail->SMTPAuth = true;
+      // Gmail ID which you want to use as SMTP server
+      $mail->Username = 'officialpurposeforproject@gmail.com';
+      // Gmail Password
+      $mail->Password = '8800583044';
+      $mail->SMTPSecure = 'tls';
+      $mail->Port = 587;
 
-$mail->send();
-echo "<script type='text/javascript'>alert('Message sent Successfully')
-        </script>";
-}
+      // Email ID from which you want to send the email
+      $mail->setFrom($email);
+      // Recipient Email ID where you want to receive emails
+      $mail->addAddress('varunrana8@gmail.com');
+
+      $mail->isHTML(true);
+      $mail->Subject = 'Form Submission';
+      $mail->Body = "<h3>Name : $name <br>Email : $email <br>Message : $message</h3>";
+
+      $mail->send();
+      echo "<script type='text/javascript'>alert('Message sent Successfully')
+          </script>";
+    } catch (Exception $e) {
+      echo "Sorry something went wrong!";
+    }
+  }
+
 ?>
